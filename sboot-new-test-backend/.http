@@ -1,0 +1,18 @@
+### Req
+POST http://localhost:8080/produto  http/1.1
+content-type: application/json
+
+{
+    "titulo": "A",
+    "descricao": "V",
+    "preco": "C",
+    "categoria": {},
+    "donoID": "N"
+}
+
+
+### Re 
+GET http://localhost:8080/produto  http/1.1
+
+
+###
