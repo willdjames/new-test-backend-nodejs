@@ -16,3 +16,17 @@ GET http://localhost:8080/produto  http/1.1
 
 
 ###
+PUT http://localhost:8080/categoria/12  http/1.1
+content-type: application/json
+
+{
+    "titulo": "12",
+    "descricao": "V",
+    "preco": "C",
+    "categoria": {},
+    "donoID": "N"
+}
+
+###
+GET http://localhost:8080/categoria  http/1.1
+
