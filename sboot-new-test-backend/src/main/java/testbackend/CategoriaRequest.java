@@ -1,6 +1,11 @@
 package testbackend;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class CategoriaRequest {
+    public String id;
+    public String categoriaID;
     public String titulo;
     public String descricao;
     public String donoID;

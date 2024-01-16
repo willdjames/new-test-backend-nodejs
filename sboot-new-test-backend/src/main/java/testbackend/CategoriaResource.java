@@ -1,9 +1,14 @@
 package testbackend;
 
 import java.net.URI;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,14 +27,29 @@ public class CategoriaResource {
     
     private static final Logger log = LoggerFactory.getLogger(CategoriaResource.class);
 
+    private MongoTemplate mongoTemplate;
+
+    
+    @Autowired
+    public CategoriaResource(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+
     @PostMapping(
         consumes = {MediaType.APPLICATION_JSON_VALUE},
         produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Object> registro(@RequestBody CategoriaRequest Categoria) {
-        log.info("{}", Categoria);
+    public ResponseEntity<Object> registro(@RequestBody CategoriaRequest categoria) {
+        log.info("{}", categoria);
 
-        return ResponseEntity.created(URI.create("/categoria")).build();
+        String categoriaID = UUID.randomUUID().toString();
+
+        categoria.categoriaID = categoriaID;
+
+        mongoTemplate.save(categoria);
+
+        return ResponseEntity.created(URI.create("/categoria/"+categoriaID)).build();
     }
 
 
@@ -58,10 +78,14 @@ public class CategoriaResource {
     
     
     @GetMapping(
+        path = "/{categoriaID}",
         produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<CategoriaRequest> acesso() {
-        CategoriaRequest categoria = new CategoriaRequest("A" ,"A", "A");
+    public ResponseEntity<CategoriaRequest> acesso(@PathVariable("categoriaID") String categoriaID) {
+
+        Query q = new Query().addCriteria(Criteria.where("categoriaID").is(categoriaID));
+
+        CategoriaRequest categoria = mongoTemplate.findOne(q, CategoriaRequest.class);
 
         log.info("{}", categoria);
 

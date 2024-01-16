@@ -16,7 +16,7 @@ GET http://localhost:8080/produto  http/1.1
 
 
 ###
-PUT http://localhost:8080/categoria/12  http/1.1
+POST http://localhost:8080/categoria  http/1.1
 content-type: application/json
 
 {
@@ -28,5 +28,5 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:8080/categoria  http/1.1
+GET http://localhost:8080/categoria/91d9f9c2-e4b7-43ac-9919-0f4291656036  http/1.1
 
